@@ -1,5 +1,5 @@
 module.exports = {
-    HOST: "locahost",
+    HOST: "localhost",
     USER: "root",
     PASSWORD: "",
     DB: "nodejs-mysql-restapi"

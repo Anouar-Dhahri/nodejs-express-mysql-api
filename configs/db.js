@@ -8,7 +8,7 @@ const connection = async (req, res, next) => {
             user: dbConfig.USER,
             password: dbConfig.PASSWORD,
             database: dbConfig.DB
-        })
+        });
         await db.connect(error => {
             if(!error) {
                 console.log("Successfully connected to the database.")
@@ -22,6 +22,4 @@ const connection = async (req, res, next) => {
     }
 }
 
-module.exports = {
-    connection
-}
+module.exports = connection
