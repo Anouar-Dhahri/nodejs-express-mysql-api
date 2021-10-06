@@ -25,7 +25,7 @@ const options = {
 }
 
 
-const specs = swaggerJsDoc(options);
+const specs = jsDoc(options);
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.json());

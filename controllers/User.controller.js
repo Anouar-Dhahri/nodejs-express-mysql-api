@@ -28,16 +28,16 @@ const addUsers = async(req, res, next) => {
         const lastname = req.body.lastname;
         const email = req.body.email;
         const phone = req.body.phone;
-        const createdAt = Date.now();
+        const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
         await db.query(
-            "INSERT INTO employees (firstname, lastname, email, phone, createdAt) VALUES (?,?,?,?,?)",
+            "INSERT INTO users (firstname, lastname, email, phone, createdAt) VALUES (?,?,?,?,?)",
             [firstname, lastname, email, phone, createdAt],
             (err, result) => {
               if (err) {
                 res.status(400).send(err);
               } else {
-                res.status(200).send("Values Inserted");
+                res.status(200).send("The User was successfully created");
               }
             }
         );

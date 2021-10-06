@@ -21,7 +21,6 @@ const {
  *                  -lastname
  *                  -email
  *                  -phone
- *                  -createdAt
  *              properties:
  *                  id:
  *                      type: number
@@ -38,14 +37,7 @@ const {
  *                      minLength: 8
  *                  createdAt:
  *                      type: string
- *                      format: date-time
- *                  exemple:
- *                      id: 1
- *                      firstname: Anouar
- *                      lastname: Dhahri
- *                      email: anouar@gmail.com 
- *                      phone: 12345678 
- *                      createdAt: 2017-07-21T17:32:28Z
+ *                      format: date
  *          Users:
  *              type: array
  *              items:
@@ -67,7 +59,7 @@ const {
 
 /**
  * @swagger
- * /users
+ * /api/users/get:
  *      get:
  *          summary: Return the list of all the users
  *          tags: [Users]
@@ -75,17 +67,19 @@ const {
  *              200:
  *                  description: The list of users
  *                  content:
- *                      application/json
+ *                      application/json:
  *                          schema:
  *                              $ref: "#/components/schemas/Users"
  *              400:
  *                  content:
- *                      application/json
+ *                      application/json:
  *                          schema:
  *                              $ref: "#/components/schemas/Error"
+ *              404:
+ *                  description: Error Not Found
  *              500:
  *                  content:
- *                      application/json
+ *                      application/json:
  *                          schema:
  *                              $ref: "#/components/schemas/Error"
  */
@@ -93,44 +87,168 @@ router.get('/get', getUsers);
 
 /**
  * @swagger
- * /users/{id}
+ * /api/users/find/{id}:
  *      get:
  *          summary: Get the user by id
  *          tags: [Users]
  *          parameters:
- *              -in: path
- *              -name: id
- *              -schema:
+ *              - in: path
+ *                name: id
+ *                schema:
  *                  type: number
- *              -required: true
- *              -description: the user id
+ *                required: true
+ *                description: The user id
  *          responses:
  *              200:
  *                  description: The user description by id
  *                  content:
- *                      application/json
+ *                      application/json:
  *                          schema:
  *                              $ref: "#/components/schemas/User"
  *              400:
  *                  content:
- *                      application/json
+ *                      application/json:
+ *                          schema:
+ *                              $ref: "#/components/schemas/Error"
+ *              404:
+ *                  description: Error Not Found
+ *              500:
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: "#/components/schemas/Error"
+ */
+router.get('/find/:id', findUser);
+
+/**
+ * @swagger
+ *  /api/users/create:
+ *    post:
+ *      summary: Create new user
+ *      tags: [Users]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#components/schemas/User'
+ *      responses:
+ *          200:
+ *              description: The book was successfully created
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                        $ref: '#/components/schemas/User'
+ *          400:
+ *              description: Some Server error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Error'
+ *          404:
+ *              description: Error Not Found
+ *          500:
+ *              description: Some server error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Error'
+ */
+router.post('/create', addUsers);
+
+/**
+ * @swagger
+ * /api/users/update/{id}:
+ *      put:
+ *          summary: Update the User by the id
+ *          tags: [Users]
+ *          parameters:
+ *              - in: path
+ *                name: id
+ *                schema:
+ *                  type: number
+ *                required: true
+ *                description: The user id
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#components/schemas/User'
+ *          responses:
+ *              200:
+ *                  description: User updated
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: "#/components/schemas/User"
+ *              400:
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: "#/components/schemas/Error"
+ *              404:
+ *                  description: Error Not Found
+ *              500:
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: "#/components/schemas/Error"
+ */
+router.put('/update/:id', updateUser);
+
+/**
+ * @swagger
+ * /api/users/deleteOne/{id}:
+ *      delete:
+ *          summary: Delete the user by id
+ *          tags: [Users]
+ *          parameters:
+ *              - in: path
+ *                name: id
+ *                schema:
+ *                  type: number
+ *                required: true
+ *                description: The user id
+ *          responses:
+ *              200:
+ *                  description: User deleted
+ *              400:
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: "#/components/schemas/Error"
+ *              404:
+ *                  description: Error Not Found
+ *              500:
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: "#/components/schemas/Error"
+ */
+router.delete('/deleteOne/:id',deleteOne);
+
+
+/**
+ * @swagger
+ * /api/users/deleteAll:
+ *      delete:
+ *          summary: Delete all users
+ *          tags: [Users]
+ *          responses:
+ *              200:
+ *                  description: All users deleted
+ *              400:
+ *                  content:
+ *                      application/json:
  *                          schema:
  *                              $ref: "#/components/schemas/Error"
  *              500:
  *                  content:
- *                      application/json
+ *                      application/json:
  *                          schema:
  *                              $ref: "#/components/schemas/Error"
  */
-router.get('/find', findUser);
-
-
-router.post('create', addUsers);
-
-router.put('/update', updateUser);
-
-router.delete('/deleteOne',deleteOne);
-
 router.delete('/deleteAll',deleteAll);
 
 module.exports = router;
